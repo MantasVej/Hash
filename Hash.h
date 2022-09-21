@@ -21,10 +21,12 @@ public:
 	Hash(const string input) {text = input; binary = ""; hash = "";}
 	Hash operator= (const string input) { text = input; binary = ""; hash = ""; return *this; }
 	~Hash() {}
+
 	string hashing() {
 		mash();
 		return hash;
 	}
+
 private:
 
 	string toBinary(string s) {
