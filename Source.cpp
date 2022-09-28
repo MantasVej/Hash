@@ -33,7 +33,15 @@ void Skaitymas(string failas, std::vector<string>& Text) {
         else break;
     }
 }
-
+void Isvedimas(std::vector<string>& Hashes) {
+    std::ofstream fr("hash.txt");
+    std::stringstream my_buffer;
+    for (auto a : Hashes) {
+        my_buffer << a << endl;
+    };
+    fr << my_buffer.str();
+    fr.close();
+}
 int main(int argc, char* argv[])
 {
     std::string file;
@@ -43,11 +51,13 @@ int main(int argc, char* argv[])
     else file = argv[1];
 
     std::vector <string> Text;
-    Skaitymas("test.txt", Text);
-    for (auto& s : Text) {
-        Hash h(s);
-        cout << h.hashing() << endl;
-    }
+    std::vector <string> Hashes;
+    Skaitymas(file, Text);
+    for (auto a : Text) {
+        Hash h(a);
+        Hashes.push_back(h.hashing());
+    };
+    Isvedimas(Hashes);
 
     return 0;
 }

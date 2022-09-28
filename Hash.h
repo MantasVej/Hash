@@ -20,7 +20,7 @@ private :
 public:
 	Hash() {text = ""; binary = ""; hash = "";}
 	Hash(const string input) {text = input; binary = ""; hash = "";}
-	Hash operator= (const string input) { text = input; binary = ""; hash = ""; return *this; }
+	Hash operator= (const string input) { text = input; binary = ""; hash = "", words.clear(); return *this; }
 	~Hash() {}
 
 	string hashing() {
