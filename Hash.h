@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <bitset>
+#include <bit>
 #include <Vector>
 #include <unordered_map>
 
@@ -14,7 +15,7 @@ private :
 	string text;
 	string binary;
 	string hash;
-	std::vector <string> chunk;
+	std::vector <string> words;
 
 public:
 	Hash() {text = ""; binary = ""; hash = "";}
@@ -67,27 +68,28 @@ private:
 		binary = toBinary(text);
 		int l = binary.length();
 		int x = l / 256 + 1;
-		binary.resize(256 * x, '0');
+		binary.resize(256 * x -  1, '0');
+		binary += '1';
 	}
 
 	void mash() {
 		padding();
-		for (int i = 0; i <= binary.length(); i += 32) {
-			chunk.push_back(binary.substr(i, 32));
+		for (int i = 0; i < binary.length(); i += 32) {
+			words.push_back(binary.substr(i, 32));
 		}
-		for (int i = 8; i < 40; i++) {
+		int n = 2 * words.size() + 40;
+		for (int i = 8; i < n; i++) {
 
-			bitset<32> a(chunk[i - 8]);
-			bitset<32> b(chunk[i - 6]);
-			bitset<32> c(chunk[i - 3]);
-			bitset<32> d(chunk[i - 1]);
+			bitset<32> a(words[i - 8]);
+			bitset<32> b(words[i - 6]);
+			bitset<32> c(words[i - 3]);
+			bitset<32> d(words[i - 1]);
 
 			bitset<32> xoa = (a ^ b);
 			bitset<32> xob = (xoa ^ c);
 			bitset<32> xoc = (xob ^ d);
-
-			std::string word = (xoc << 1).to_string();
-			chunk.push_back(word);
+			std::string word = std::bitset<32> (std::rotl(xoc.to_ulong(), 1)).to_string();
+			words.push_back(word);
 
 		}
 
@@ -100,18 +102,32 @@ private:
 		bitset<32> k7("10011011000100011100110101101110");
 		bitset<32> k8("10110100011010000110110110011100");
 
-		for (string const& s : chunk) {
-			bitset<32> a(s);
-			k1 ^= a;
-			k2 ^= a;
-			k3 ^= a;
-			k4 ^= a;
-			k5 ^= a;
-			k6 ^= a;
-			k7 ^= a;
-			k8 ^= a;
+		for (int i = 36; i < n; i++) {
+			bitset<32> a(words[i - 36]);
+			bitset<32> b(words[i - 33]);
+			bitset<32> c(words[i - 29]);
+			bitset<32> d(words[i - 23]);
+			bitset<32> e(words[i - 17]);
+			bitset<32> f(words[i - 11]);
+			bitset<32> g(words[i - 5]);
+			bitset<32> h(words[i - 1]);
+
+			bitset<32> xoa = (a ^ b);
+			bitset<32> xob = (xoa ^ c);
+			bitset<32> xoc = (xob ^ d);
+			bitset<32> xod = (xoc ^ e);
+			bitset<32> xoe = (xoa ^ f);
+			bitset<32> xof = (xob ^ g);
+			bitset<32> xog = (xob ^ h);
+			k1 ^= xog;
+			k2 ^= xog;
+			k3 ^= xog;
+			k4 ^= xog;
+			k5 ^= xog;
+			k6 ^= xog;
+			k7 ^= xog;
+			k8 ^= xog;
 		}
-		
 		hash = binToHex(k1.to_string() + k2.to_string() + k3.to_string() + k4.to_string() + k5.to_string() + k6.to_string() + k7.to_string() + k8.to_string());
 
 	}
