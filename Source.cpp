@@ -4,11 +4,42 @@
 #include <fstream>
 #include <sstream>
 #include <exception>
+#include <random>
 #include "Hash.h";
 
 using std::cout;
 using std::endl;
 
+std::string random_string(int length){
+
+    const std::string CHARACTERS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    std::random_device random_device;
+    std::mt19937 generator(random_device());
+    std::uniform_int_distribution<> distribution(0, CHARACTERS.size() - 1);
+
+    std::string random_string;
+
+    for (std::size_t i = 0; i < length; ++i)
+    {
+        random_string += CHARACTERS[distribution(generator)];
+    }
+
+    return random_string;
+}
+void fileGenerator(int n, int m, int length) {
+    std::ofstream fr("test.txt");
+    std::stringstream my_buffer;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            my_buffer << random_string(length);
+            if (j + 1 != m) my_buffer << " ";
+        }
+        if (i + 1 != n)my_buffer << endl;
+    };
+    fr << my_buffer.str();
+    fr.close();
+}
 void Skaitymas(string failas, std::vector<string>& Text) {
 
     string eil;
@@ -47,12 +78,13 @@ void Collisions(std::vector<string>& Hashes) {
     std::unordered_map<string, int> m;
     for (auto a : Hashes) {
         if (!m.count(a)) m[a] = 1;
-        else { m[a]++; c++; cout << a << endl; }
+        else { m[a]++; c++;}
     }
     cout << c << " collisions out of " << Hashes.size() << " hashes" << endl;
 }
 int main(int argc, char* argv[])
 {
+    //fileGenerator(25000, 2, 1000);
     std::string file;
     if (argc != 2) {
         cout << "Iveskite duomenu failo pavadinima: "; std::cin >> file;
