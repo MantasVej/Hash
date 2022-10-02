@@ -78,6 +78,7 @@ private:
 			words.push_back(binary.substr(i, 32));
 		}
 		int n = 2 * words.size() + 40;
+		
 		for (int i = 8; i < n; i++) {
 
 			bitset<32> a(words[i - 8]);
@@ -92,7 +93,7 @@ private:
 			words.push_back(word);
 
 		}
-
+		n = words.size();
 		bitset<32> k1("10110100111001111000101000100101");
 		bitset<32> k2("11010101010100100010000011110001");
 		bitset<32> k3("01100111000110101000101101001000");
@@ -113,11 +114,59 @@ private:
 			bitset<32> h(words[i - 1]);
 
 			bitset<32> xoa = (a ^ b);
+			k1 ^= xoa;
+			k2 ^= xoa;
+			k3 ^= xoa;
+			k4 ^= xoa;
+			k5 ^= xoa;
+			k6 ^= xoa;
+			k7 ^= xoa;
+			k8 ^= xoa;
 			bitset<32> xob = (xoa ^ c);
+			k1 ^= xob;
+			k2 ^= xob;
+			k3 ^= xob;
+			k4 ^= xob;
+			k5 ^= xob;
+			k6 ^= xob;
+			k7 ^= xob;
+			k8 ^= xob;
 			bitset<32> xoc = (xob ^ d);
+			k1 ^= xoc;
+			k2 ^= xoc;
+			k3 ^= xoc;
+			k4 ^= xoc;
+			k5 ^= xoc;
+			k6 ^= xoc;
+			k7 ^= xoc;
+			k8 ^= xoc;
 			bitset<32> xod = (xoc ^ e);
+			k1 ^= xod;
+			k2 ^= xod;
+			k3 ^= xod;
+			k4 ^= xod;
+			k5 ^= xod;
+			k6 ^= xod;
+			k7 ^= xod;
+			k8 ^= xod;
 			bitset<32> xoe = (xoa ^ f);
+			k1 ^= xoe;
+			k2 ^= xoe;
+			k3 ^= xoe;
+			k4 ^= xoe;
+			k5 ^= xoe;
+			k6 ^= xoe;
+			k7 ^= xoe;
+			k8 ^= xoe;
 			bitset<32> xof = (xob ^ g);
+			k1 ^= xof;
+			k2 ^= xof;
+			k3 ^= xof;
+			k4 ^= xof;
+			k5 ^= xof;
+			k6 ^= xof;
+			k7 ^= xof;
+			k8 ^= xof;
 			bitset<32> xog = (xob ^ h);
 			k1 ^= xog;
 			k2 ^= xog;

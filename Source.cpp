@@ -27,6 +27,7 @@ std::string random_string(int length){
 
     return random_string;
 }
+//eiluciu skaicius, zodziu skaicius eiluteje, zodziu ilgis
 void fileGenerator(int n, int m, int length) {
     std::ofstream fr("test.txt");
     std::stringstream my_buffer;
