@@ -1,5 +1,17 @@
 # Hash
-## EKSPERIMENTINĖ ANALIZĖ
+
+## Algoritmo veikimas:
+
+1. Įvesties tekstas pagal ASCII lentelės reikšmes konveruojamas į binary kodą.
+2. Prie binary kodo pridedama tiek '0' kad gauta simbolių eilutė būtų dali iš 256, paskutinis simbolis pakeičiamas į '1'.
+3. Binary kodo eilutė suskaidoma į 32-bit'ų žodžius, jie patalpinami į vectorių.
+4. Vykdomas ciklas, iš vectoriaus imama po 4 žodžius, su visais atliekama bitinė XOR (exclusive or) operacija, po to atliekama left shift operacija per 1 poziją. Gauta reikšmė dedama į vectorių. Taip sugeneruojama n naujų žodžių (n = 2 * pradinis_vectoriaus_dydis + 40).
+5. Įsivedamos 8 32-bit'ų reikšmės (keys).
+6. Vykdomas ciklas, iš vectoriaus imama po 8 žodžius, su kiekvienu atliekama bitinė XOR (exclusive or) operacija, po to kiekvienos tokios operacijos padaroma XOR su kiekviena iš 8 keys reikšmių.
+7. Baigus ciklą, keys reikšmės sujungiamos  ir gaunamas 256 bit'ų binary string'as.
+8. Binary string'a konvertuojamas į 64-bit'ų hex kodą.
+
+## Eksperimentinė analizė
 1.
 1.1  Testiniai failai ***1a.txt*** ir ***1b.txt*** sudaryti iš vieno, tačiau skirtingo simbolio.
 | Input| Hash |
@@ -43,6 +55,23 @@
 Dvigubai padidėjus input'ų skaičiui maždaug dvigubai padidėja ir laikas, funkcijos sudėtingumas O(n).
 
 4. Sugeneruotas 100 000 skirtingų string'ų porų failas ***t.txt***: 25 000 porų, kurių ilgis 10 simbolių, 25 000 porų, kurių ilgis -
-100, 25 000 poros - 500, ir 25 000 poros, kurių ilgis - 1000 simbolių.
+100, 25 000 porų - 500, ir 25 000 porų, kurių ilgis - 1000 simbolių.
 
 5. Suhash'avus 4 žingsnyje sugeneruotas 100 000 string'ų porų gauta **0 kolizijų**.
+
+6. Susigeneruota 150 000 atsitiktinių string'ų porų, taip, kad jos skirtųsi tik vienu simboliu. 25 000 porų, kurių ilgis 10 simbolių, 25 000 porų, kurių ilgis -
+95, 25 000 porų - 96, 25 000 porų - 100, 25 000 porų - 500, ir 25 000 porų, kurių ilgis - 1000 simbolių. Pastebėta, kad string'ams virš 95 simbolių gaunama sutampančių porų. Įdomu tai, kad didinant stringų ilgį sutapančių porų mažėja.
+
+|    String'ų ilgis   | Sutapo |
+|---------------------|--------|
+| 10                  | 0      |
+| 50                  | 0      |
+| 95                  | 0      |
+| 96                  | 3080   |
+| 100                 | 2948   |
+| 500                 | 1149   |
+| 1000                | 568    |
+
+7. ### Analizės išvados:
+
+Hashavimo algoritmas veikia tik iš dalies. Gerai apdoroja trumpus input'us, hash'uoja greitai, sudėtingumas O(n), nėra gaunama kolizijų. Tačiau, kai paduodami ilgesni string'ai (virš 95 simbolių), kurie yra labai panašūs (pvz. skiriasi tik vienu simboliu) gaunamos labai panašios hash reikšmės, taip pat gan dažnai atsiranda kolizija.
