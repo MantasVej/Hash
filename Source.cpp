@@ -42,6 +42,15 @@ void Isvedimas(std::vector<string>& Hashes) {
     fr << my_buffer.str();
     fr.close();
 }
+void Collisions(std::vector<string>& Hashes) {
+    int c = 0;
+    std::unordered_map<string, int> m;
+    for (auto a : Hashes) {
+        if (!m.count(a)) m[a] = 1;
+        else { m[a]++; c++; cout << a << endl; }
+    }
+    cout << c << " collisions out of " << Hashes.size() << " hashes" << endl;
+}
 int main(int argc, char* argv[])
 {
     std::string file;
@@ -57,6 +66,7 @@ int main(int argc, char* argv[])
         Hash h(a);
         Hashes.push_back(h.hashing());
     };
+    Collisions(Hashes);
     Isvedimas(Hashes);
 
     return 0;
